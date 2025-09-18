@@ -1,0 +1,13 @@
+import cv2
+
+# Resim okuma
+img = cv2.imread("resim.jpg")
+
+# Resim gösterme
+cv2.imshow("Goruntu", img)
+
+# Bir tuşa basılana kadar bekle
+cv2.waitKey(0)
+
+# Pencereyi kapat
+cv2.destroyAllWindows()
