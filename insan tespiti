@@ -1,0 +1,33 @@
+import cv2
+
+# İnsan dedektörü tanımlama (HOG + SVM)
+hog = cv2.HOGDescriptor()
+hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+
+# Video ya da kamera açma (0 -> bilgisayar kamerası)
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # İnsanları tespit et
+    (insanlar, _) = hog.detectMultiScale(frame,
+                                         winStride=(4,4),
+                                         padding=(8,8),
+                                         scale=1.05)
+
+    # Tespit edilen insanların etrafına dikdörtgen çiz
+    for (x, y, w, h) in insanlar:
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    # Görüntüyü göster
+    cv2.imshow("Insan Tespiti", frame)
+
+    # ESC tuşuna basıldığında çıkış yap
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
